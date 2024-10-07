@@ -2,12 +2,13 @@ package lk.ijse.posbackend.Controller;
 
 import lk.ijse.posbackend.Dto.UserDto;
 import lk.ijse.posbackend.Exceptions.DataPersistException;
-import lk.ijse.posbackend.Mapping.Mapping;
 import lk.ijse.posbackend.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -30,5 +31,10 @@ public class UserController {
     }
 
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public List<UserDto> getAllUsers(){
+       return   userService.getAllUsers();
     }
 }

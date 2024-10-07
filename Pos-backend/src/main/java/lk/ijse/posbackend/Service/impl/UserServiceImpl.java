@@ -29,6 +29,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getAllUsers() {
-        return null;
+        return userMapping.asUserDtoList(userDao.findAll());
     }
 }
