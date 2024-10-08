@@ -1,7 +1,4 @@
 
-
-
-
 $(document).ready(function () {
 
 
@@ -68,7 +65,7 @@ $(document).ready(function () {
             note: customerNote
         };
         $.ajax({
-            url: "http://localhost:8080/posbackend/customer",
+            url: "http://localhost:8080/Pos/api/v1/customers",
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify(customer),
@@ -95,7 +92,7 @@ $(document).ready(function () {
     function loadTable(){
         $("#customerTable").empty();
         $.ajax({
-            url: "http://localhost:8080/posbackend/customer", // Adjust the URL if needed
+            url: "http://localhost:8080/Pos/api/v1/customers", // Adjust the URL if needed
             type: "GET",
             contentType: "application/json",// The type of data you're expecting back from the server
             success: function(customers) {
@@ -178,7 +175,7 @@ $(document).ready(function () {
 
 
         $.ajax({
-            url: "http://localhost:8080/posbackend/customer",
+            url: `http://localhost:8080/Pos/api/v1/customers/${idModalValue}`,
             type: "PUT",
             contentType: "application/json",
             data: JSON.stringify(customer),
@@ -208,7 +205,7 @@ $(document).ready(function () {
         console.log(id)
        /* customerArray.splice(recordIndex,1);*/
         $.ajax({
-            url: `http://localhost:8080/posbackend/customer?id=${id}`,
+            url: `http://localhost:8080/Pos/api/v1/customers/${id}`,
             type: 'DELETE',
             success: function (response) {
                 console.log("Customer deleted successfully");
@@ -259,7 +256,7 @@ $(document).ready(function () {
 
         console.log(customerId)
         $.ajax({
-            url: `http://localhost:8080/posbackend/customer?id=${customerId}`,
+            url: `http://localhost:8080/Pos/api/v1/customers/${customerId}`,
             type: 'GET',
             success: function (response) {
                 if (response) {
