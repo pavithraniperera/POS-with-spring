@@ -1,3 +1,4 @@
+/*
 
 import { loadOrderTable } from './Item.js'
 var recordIndex;
@@ -19,7 +20,7 @@ $("#orderTable").on("click","tr",function (){
     $("#orderDate").val(date);
     $("#orderTotal").text(total);
    // let proceedItemsArray = getProceedItemsArray(orderId);
-    /*console.log(proceedItemsArray);*/
+    /!*console.log(proceedItemsArray);*!/
     $.ajax({
         url: `http://localhost:8080/posbackend/order?id=${orderId}`,
         type: 'GET',
@@ -187,3 +188,4 @@ function performSearch() {
     searchOrders(customerId);
 }
 
+*/

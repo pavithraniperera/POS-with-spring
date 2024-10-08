@@ -1,6 +1,6 @@
 package lk.ijse.posbackend.Service.impl;
 
-import lk.ijse.posbackend.Dto.OrderDto;
+import lk.ijse.posbackend.Dto.impl.OrderDto;
 import lk.ijse.posbackend.Service.OrderService;
 
 import java.util.List;
@@ -12,7 +12,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void update(OrderDto orderDto) {
+    public void update(String id,OrderDto orderDto) {
 
     }
 
@@ -26,8 +26,5 @@ public class OrderServiceImpl implements OrderService {
         return null;
     }
 
-    @Override
-    public OrderDto getById(String id) {
-        return null;
-    }
+
 }

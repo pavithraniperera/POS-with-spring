@@ -1,6 +1,6 @@
 package lk.ijse.posbackend.Controller;
 
-import lk.ijse.posbackend.Dto.UserDto;
+import lk.ijse.posbackend.Dto.impl.UserDto;
 import lk.ijse.posbackend.Exceptions.DataPersistException;
 import lk.ijse.posbackend.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

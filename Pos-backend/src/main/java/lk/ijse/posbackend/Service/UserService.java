@@ -1,6 +1,6 @@
 package lk.ijse.posbackend.Service;
 
-import lk.ijse.posbackend.Dto.UserDto;
+import lk.ijse.posbackend.Dto.impl.UserDto;
 
 import java.util.List;
 

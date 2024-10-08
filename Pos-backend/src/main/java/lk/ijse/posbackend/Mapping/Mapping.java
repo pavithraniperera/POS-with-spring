@@ -1,6 +1,6 @@
 package lk.ijse.posbackend.Mapping;
 
-import lk.ijse.posbackend.Dto.*;
+import lk.ijse.posbackend.Dto.impl.*;
 import lk.ijse.posbackend.Entity.*;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -40,11 +40,11 @@ public class Mapping {
     }
 
     //For customers
-    public UserEntity  toCustomerEntity(CustomerDto customerDto){
-        return modelMapper.map(customerDto, UserEntity.class);
+    public CustomerEntity  toCustomerEntity(CustomerDto customerDto){
+        return modelMapper.map(customerDto, CustomerEntity.class);
     }
-    public UserDto toCustomerDto(CustomerEntity customerEntity){
-        return modelMapper.map(customerEntity, UserDto.class);
+    public CustomerDto toCustomerDto(CustomerEntity customerEntity){
+        return modelMapper.map(customerEntity, CustomerDto.class);
     }
     public List<CustomerDto> asCustomerDtoList(List<CustomerEntity> customerEntities){
         return  modelMapper.map(customerEntities, new TypeToken<List<CustomerDto>>() {}.getType());

@@ -1,4 +1,4 @@
-package lk.ijse.posbackend.Dto;
+package lk.ijse.posbackend.Dto.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

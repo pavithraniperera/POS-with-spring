@@ -1,6 +1,6 @@
 package lk.ijse.posbackend.Service.impl;
 
-import lk.ijse.posbackend.Dto.ItemDto;
+import lk.ijse.posbackend.Dto.impl.ItemDto;
 import lk.ijse.posbackend.Service.ItemService;
 
 import java.util.List;
@@ -12,7 +12,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void update(ItemDto itemDto) {
+    public void update(String id,ItemDto itemDto) {
 
     }
 
@@ -26,8 +26,6 @@ public class ItemServiceImpl implements ItemService {
         return null;
     }
 
-    @Override
-    public ItemDto getById(String id) {
-        return null;
-    }
+
+
 }

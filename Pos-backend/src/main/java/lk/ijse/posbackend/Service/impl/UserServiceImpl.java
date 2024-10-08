@@ -1,7 +1,7 @@
 package lk.ijse.posbackend.Service.impl;
 
 import lk.ijse.posbackend.Dao.UserDao;
-import lk.ijse.posbackend.Dto.UserDto;
+import lk.ijse.posbackend.Dto.impl.UserDto;
 import lk.ijse.posbackend.Entity.UserEntity;
 import lk.ijse.posbackend.Exceptions.DataPersistException;
 import lk.ijse.posbackend.Mapping.Mapping;
