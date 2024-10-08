@@ -139,15 +139,13 @@ function handleSignIn(users) {
 
 
 
-
-
 }
 
 $(document).ready(function () {
         // Add event listener to the form for form submission
         $("#signIn").click(function () {
             $.ajax({
-                    url: "http://localhost:8080/posbackend/user",
+                    url: "http://localhost:8080/Pos/api/v1/users",
                     type: "GET",
                     contentType: "application/json",
                 success: function(response) {

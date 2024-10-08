@@ -28,7 +28,7 @@ $(document).ready(function (){
 
         }
         $.ajax({
-            url: "http://localhost:8080/posbackend/user",
+            url: "http://localhost:8080/Pos/api/v1/users",
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify(user),
