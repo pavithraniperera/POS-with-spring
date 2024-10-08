@@ -1,0 +1,57 @@
+.sales-table {
+    border-collapse: collapse;
+    width: 100%; /* Ensures full width on all devices */
+    margin-bottom: 20px;
+}
+
+.sales-table th,
+.sales-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left; /* Left align for better readability */
+}
+
+.sales-table th {
+    background-color: rgba(2, 81, 89, 0.52); /* Light gray header background */
+    font-weight: bold;
+}
+.sales-table td{
+    background-color: rgba(33, 153, 166, 0.42);
+}
+.button-custom{
+    position: absolute;
+    bottom: -30px;
+    width: 500px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    background-color: #2199A6;
+}
+.button-custom:hover{
+    background-color: #025159;
+}
+
+@media screen and (max-width: 768px) {
+    .sales-table thead th {
+        /* Hide table headers on mobile for better fit */
+        display: none;
+    }
+
+    .sales-table tr {
+        border-bottom: 1px solid rgba(2, 81, 89, 0.25); /* Emphasize rows on mobile */
+    }
+
+    .sales-table td:nth-child(1) {
+        /* Make first column (product name) bold on mobile */
+        font-weight: bold;
+    }
+    .button-custom{
+        position: absolute;
+        bottom: -80px;
+        width: 500px;
+        left: 0;
+        right: 0;
+        margin: auto;
+        background-color: #2199A6;
+    }
+}

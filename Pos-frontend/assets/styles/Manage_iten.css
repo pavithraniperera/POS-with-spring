@@ -1,0 +1,174 @@
+
+.info-section{
+    position: absolute;
+    top: 156px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    background-color: rgba(2, 81, 89, 0.42);
+    width: 1200px;
+    height: 650px;
+    border-radius: 20px;
+    padding: 0;
+
+}
+body{
+    padding-top: 150px;
+}
+.image-upload-container {
+    position: absolute;
+    width: 400px;
+    top: 60px;
+    left: 50px;
+    color: #025159;
+    text-align: center;
+    padding: 10px;
+    background-color: #F2F2F2;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+
+}
+
+.image-preview {
+    border: 2px dashed #cccccc;
+    border-radius: 5px;
+    min-height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.upload-icon {
+    font-size: 40px;
+    color: #cccccc;
+}
+
+.upload-text {
+    margin-top: 10px;
+    color: #888888;
+}
+
+.upload-btn {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #2199A6;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.upload-btn:hover {
+    background-color: #025159;
+}
+.upload-btn i{
+    font-size: 20px;
+    margin-right: 20px;
+}
+
+.form-container-custom{
+    position: absolute;
+    right: 20px;
+    top: 5vh;
+    width: 600px;
+
+}
+.form-container-custom label{
+    font-size: 20px;
+    color: #025159;
+    font-family: inria Serif, serif;
+}
+.button-container{
+    position: absolute;
+    bottom: 20px;
+}
+.button-container button{
+    width: 150px;
+    margin: 0 20px;
+    background-color: #2199A6;
+    border: 1px solid gray;
+    color: white;
+}
+.button-container button i{
+    font-size: 20px;
+    margin-right: 20px;
+    color: white;
+}
+
+.table-section{
+    position: absolute;
+    top: 1000px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    padding: 0;
+}
+.table-custom th{
+    background-color: rgba(242, 92, 5, 0.68);
+    font-size: 25px;
+    font-family: inria, serif;
+    color: white;
+    text-align: center;
+    
+}
+
+.table-custom button i{
+    color: white;
+
+}
+.table-custom button{
+    background-color: coral;
+    border: 1px orangered solid;
+    margin: 0 20px;
+}
+.table-custom td{
+    background-color: rgba(242, 92, 5, 0.27);
+    font-family: Inter, serif;
+    font-size: 23px;
+}
+
+@media all and (max-width: 1000px) {
+    .info-section {
+        height: auto;
+    }
+
+    .image-upload-container,
+    .form-container-custom {
+        position: static;
+        width: auto;
+        margin: 20px 0;
+    }
+
+    .image-upload-container {
+        text-align: center;
+    }
+
+    .button-container {
+        position: relative;
+        bottom: auto;
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .button-container button {
+        width: 40%;
+        margin: 10px;
+    }
+    .table-section{
+        top: 1350px;
+    }
+    .table-custom th{
+        font-size: 20px;
+    }
+
+    .table-custom td{
+        font-size: 18px;
+    }
+
+}
+

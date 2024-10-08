@@ -1,0 +1,143 @@
+.id-custom{
+
+    margin-top: 50px;
+    margin-left: 50px;
+
+
+}
+.id-custom input{
+    margin-top: 10px;
+    width: 300px;
+}
+.id-custom label{
+    color: #025159;
+    font-family: inria Serif, serif;
+    font-size: 20px;
+}
+.name-custom{
+    margin-top: 50px;
+    margin-right: 70px;
+}
+.name-custom input{
+    margin-top: 10px;
+}
+.name-custom label{
+    color: #025159;
+    font-family: inria Serif, serif;
+    font-size: 20px;
+}
+
+.contact-custom{
+    margin-top: 30px;
+    margin-left:50px ;
+
+}
+.contact-custom input{
+    margin-top: 10px;
+    width: 600px;
+}
+.contact-custom label{
+    color: #025159;
+    font-family: inria Serif, serif;
+    font-size: 20px;
+}
+.address-custom{
+    margin-top: 30px;
+    margin-left: 50px;
+}
+.address-custom textarea{
+    width:600px ;
+    margin-top: 10px;
+    color: rgba(2, 81, 89, 0.38);
+    height: 70px;
+}
+.address-custom label{
+    color: #025159;
+    font-family: inria Serif, serif;
+    font-size: 20px;
+}
+.image-customize{
+    position: absolute;
+    left: 700px;
+    top: 200px;
+    background-image: url("../images/istockphoto-1345283077-612x612-removebg-preview.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    transform: scaleX(-1); /* Flip the image horizontally */
+    width: 450px;
+    height: 350px;
+
+}
+
+.modal-content {
+    padding: 20px;
+    border-radius: 5px;
+}
+.modal-content label{
+    font-size: 20px;
+    color: #025159;
+}
+
+/* Style the modal title */
+.modal-title {
+    font-weight: bold;
+}
+
+/* Add a subtle border and some spacing to the form group */
+.form-group {
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ddd}
+@media all and (max-width: 1000px) {
+    /* Adjust breakpoint as needed */
+
+    .image-customize {
+        display: none;
+    }
+
+    .container {
+
+        padding: 0 10px; /* Adjust horizontal padding as needed */
+    }
+
+    .info-section {
+        width: 800px !important;
+    }
+
+    .table-section {
+        top: 1000px !important;
+    }
+
+    .button-container {
+        width: 500px;
+        left: 0;
+        right: 0;
+        margin: auto;
+    }
+    .id-custom input{
+        width: 100px !important;
+    }
+
+}
+
+
+@media all and ( max-width: 768px){
+    .info-section{
+        width: 600px !important;
+    }
+
+    .contact-custom input{
+        width: 400px;
+    }
+    .address-custom textarea{
+        width: 400px !important;
+    }
+
+
+
+
+}
+
+
+
+
