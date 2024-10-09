@@ -5,6 +5,7 @@ import lk.ijse.posbackend.CustomStatusCodes.ErrorStatus;
 import lk.ijse.posbackend.Dto.CustomerStatus;
 import lk.ijse.posbackend.Dto.ItemStatus;
 import lk.ijse.posbackend.Dto.impl.ItemDto;
+import lk.ijse.posbackend.Exceptions.CustomerNotFoundException;
 import lk.ijse.posbackend.Service.ItemService;
 import lk.ijse.posbackend.util.AppUtil;
 import lk.ijse.posbackend.util.RegexUtil;
@@ -98,6 +99,26 @@ public class ItemController {
             return new ResponseEntity<>("Failed to Update item", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+
+    }
+    @DeleteMapping(value = "/{itemId}")
+    public ResponseEntity<Void> deleteCustomer(@PathVariable("itemId") String itemId){
+
+        try {
+            if (!RegexUtil.isValidItemId(itemId)){
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            itemService.delete(itemId);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+        }catch (CustomerNotFoundException e){
+            e.printStackTrace();
+            return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
     }
 
