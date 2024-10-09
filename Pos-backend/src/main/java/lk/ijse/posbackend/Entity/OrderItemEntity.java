@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Entity
 @Table(name = "order_items")
@@ -15,8 +16,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class OrderItemEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-generated primary key
-    private int id;
+    @GeneratedValue(strategy = GenerationType.AUTO) // Auto-generated primary key
+    private UUID id;
 
     @Column(nullable = false)
     private Integer quantity;

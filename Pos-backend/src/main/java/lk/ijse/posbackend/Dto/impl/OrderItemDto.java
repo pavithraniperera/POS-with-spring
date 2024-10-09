@@ -14,7 +14,7 @@ public class OrderItemDto {
     private Integer quantity;
     private BigDecimal unitPrice;
     private BigDecimal totalPrice;
-    private int itemId;
+    private String itemId;
     private String itemName;
 
 
