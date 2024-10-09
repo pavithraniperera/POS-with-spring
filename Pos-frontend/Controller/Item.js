@@ -1,3 +1,4 @@
+/*
 
 import {loadItemTable} from "./AddedItem.js"
 
@@ -216,7 +217,7 @@ export function loadOrderTable(){
         });
 
         console.log("Total Price:", totalPrice);
-     /*   console.log(proceedItems);*/
+     /!*   console.log(proceedItems);*!/
         $("#payTotal").text(totalPrice);
         setTotalAmount(totalPrice);
         setCustomerId();
@@ -469,4 +470,4 @@ export function loadOrderTable(){
 
 
 
- });
+ });*/
