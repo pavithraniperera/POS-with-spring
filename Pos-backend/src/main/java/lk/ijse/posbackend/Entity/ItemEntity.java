@@ -15,8 +15,7 @@ import java.math.BigDecimal;
 public class ItemEntity {
     @Id
     @Column(name = "item_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-generated primary key
-    private int id;
+    private String id;
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
@@ -24,6 +23,9 @@ public class ItemEntity {
     private Integer stockQuantity;
     private String category;
     private String description;
+    @Column(columnDefinition = "LONGTEXT")
     private String img;
 
 }
+
+
