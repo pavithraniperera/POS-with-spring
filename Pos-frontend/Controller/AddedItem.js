@@ -5,7 +5,7 @@ export function loadItemTable(){
     $("#itemTable").empty();
 
     $.ajax({
-        url: 'http://localhost:8080/posbackend/item', // URL to your doGet method
+        url: 'http://localhost:8080/Pos/api/v1/items', // URL to your doGet method
         type: 'GET',
         contentType: "application/json",
         success: function(items) {
@@ -13,10 +13,10 @@ export function loadItemTable(){
 
             items.forEach((item) => {
                 var newRow = `
-                    <tr data-id="${item.id}">
+                    <tr data-id="${item.id}"  data-img="${item.img}">
                         <td class="name">${item.name}</td>
                         <td class="cost">${item.price}</td>
-                        <td class="quantity">${item.quantity}</td>
+                        <td class="quantity">${item.stockQuantity}</td>
                         <td class="category">${item.category}</td>
                         <td class="description">${item.description}</td>
                         <td>
@@ -88,10 +88,10 @@ $(document).ready(function (){
         const itemData = {
             name: itemName,
             price: parseFloat(itemPrice),
-            quantity: parseInt(itemQuantity),
+            stockQuantity: parseInt(itemQuantity),
             category:itemCategory,
             description: itemDesc,
-            imgSrc: $("#imageUpload")[0].files[0].name // Only the image name
+
 
         };
         // Create FormData to handle file upload
@@ -103,7 +103,7 @@ $(document).ready(function (){
 
 
         $.ajax({
-            url: 'http://localhost:8080/posbackend/item', // Adjust URL as needed
+            url: 'http://localhost:8080/Pos/api/v1/items', // Adjust URL as needed
             type: 'POST',
             data: formData,
             processData: false,
@@ -133,10 +133,10 @@ $(document).ready(function (){
     let selectedImage = null;
 
 
-    function showImagePreview(imageSrc) {
+    function showImagePreview(base64Image) {
         const imagePreview = document.getElementById('imagePreview');
         imagePreview.innerHTML = `
-        <img src="${imageSrc}" alt="Selected Image" class="preview-img" style="max-width: 100%; max-height: 100%;">
+        <img src="data:image/png;base64,${base64Image}" alt="Selected Image" class="preview-img" style="max-width: 100%; max-height: 100%;">
     `;
     }
 
@@ -188,12 +188,22 @@ $(document).ready(function (){
         $("#itemQuantity").val(qty);
         $("#itemDescription").val(desc);
         $("#itemCategory").empty();
-        showImagePreview("assets/images/"+item.imgSrc);
+        let img = $(this).data("img"); // Get the base64 image
+        showImagePreview(img);
 
         CategorySelect("itemCategory",category)
 
 
-        editItem = item;
+       // editItem = item;
+        editItem={
+            id: itemId,
+            name: item.name,
+            price: item.price, // Ensure price is a number
+            stockQuantity: item.stockQuantity, // Ensure quantity is a number
+            category: item.category,
+            description: item.description,
+
+        }
     });
 
     function CategorySelect(selectElementId, selectedCategory) {
@@ -215,26 +225,30 @@ $(document).ready(function (){
     });
 
    function editItemFunction(editItem){
-       $("#itemEditModal").data('itemName', editItem.name); // Store item name in modal data attribute
+      // $("#itemEditModal").data('itemName', editItem.name); // Store item name in modal data attribute
+       $("#itemEditModal").data('itemId', editItem.id); // Store item name in modal data attribute
        let item = getItemByName(editItem.name);
        $("#itemNameModal").val(editItem.name);
        $("#itemPriceModal").val(editItem.price);
-       $("#itemQuantityMoadal").val(editItem.quantity);
+       $("#itemQuantityMoadal").val(editItem.stockQuantity);
        $("#itemDescriptionModal").val(editItem.description)
 
 
        CategorySelect("itemCategoryModal",editItem.category);
        // Set image preview
-       if (item.imgSrc) {
+
+       if (item.img) {
+           // Use the base64 string directly for the image source
            $('#imagePreviewModal').html(`
-                <img src="${"assets/images/"+item.imgSrc}" alt="${item.name}" class="preview-img" style="max-width: 100%; max-height: 100%;">
-            `);
-           selectedImage = "assets/images/"+item.imgSrc;
+            <img src="data:image/png;base64,${item.img}" alt="${item.name}" class="preview-img" style="max-width: 100%; max-height: 100%;">
+        `);
+          // selectedImage = item.img; // Store the base64 image string in selectedImage
+            selectedImage = base64ToFile(`data:image/png;base64,${item.img}`, `${item.name}.png`);
        } else {
            $('#imagePreviewModal').html(`
-                <span class="upload-icon">+</span>
-                <p class="upload-text">Click or drag & drop an image</p>
-            `);
+            <span class="upload-icon">+</span>
+            <p class="upload-text">Click or drag & drop an image</p>
+        `);
            selectedImage = null;
        }
 
@@ -242,48 +256,89 @@ $(document).ready(function (){
 
 
    }
+    function base64ToFile(base64String, filename) {
+        // Split the base64 string to get the content type and the base64-encoded data
+        const arr = base64String.split(',');
+        const mimeType = arr[0].match(/:(.*?);/)[1]; // Extract the MIME type
+        const byteString = atob(arr[1]); // Decode base64 data
+
+        // Create an ArrayBuffer for the decoded data
+        let n = byteString.length;
+        const uint8Array = new Uint8Array(n);
+
+        // Copy the byte string into the Uint8Array
+        while (n--) {
+            uint8Array[n] = byteString.charCodeAt(n);
+        }
+
+        // Create a Blob object from the Uint8Array and the MIME type
+        const blob = new Blob([uint8Array], { type: mimeType });
+
+        // Return the Blob as a File object
+        return new File([blob], filename, { type: mimeType });
+    }
+
+
 
     $("#saveItemChanges").click(function () {
+        // Get values from modal fields
         var nameModalValue = $("#itemNameModal").val();
         var priceModalValue = $("#itemPriceModal").val();
-        var qtyModalValue = $("#itemQuantityMoadal").val();
-        var descriptionValue =$("#itemDescriptionModal").val()
-        var Value =document.getElementById("itemCategoryModal");
-        var categoryModalValue =  Value.options[Value.selectedIndex].text;
+        var qtyModalValue = $("#itemQuantityModal").val(); // Fixed typo
+        var descriptionValue = $("#itemDescriptionModal").val();
+        var categoryValue = document.getElementById("itemCategoryModal");
+        var categoryModalValue = categoryValue.options[categoryValue.selectedIndex].text;
 
-        const itemName = $("#itemEditModal").data('itemName');
+        // Ensure itemId is set properly; if not globally accessible, capture it elsewhere.
+        const itemId = $("#itemEditModal").data('itemId'); // Assuming you store itemId in the modal's data
 
-
-        let item ={
-            id:itemId,
+        // Construct the itemData object
+        const itemData = {
+            id: itemId, // Use itemId from modal
             name: nameModalValue,
-            price:priceModalValue,
-            quantity:qtyModalValue,
-            category:categoryModalValue,
-            description:descriptionValue,
-            imgSrc:selectedImage.split("assets/images/")[1]
+            price: parseFloat(priceModalValue), // Ensure price is a number
+            stockQuantity: parseInt(qtyModalValue), // Ensure quantity is a number
+            category: categoryModalValue,
+            description: descriptionValue,
+        };
 
+        console.log(itemData); // For debugging purposes
+
+        // Create FormData to handle file upload (if you have an image input, else use base64)
+        let formData = new FormData();
+        formData.append("itemData", JSON.stringify(itemData));
+
+        // If you're handling base64 images, you can add it like this:
+        if (selectedImage) {
+            formData.append("imageFile",selectedImage); // Convert base64 to Blob and append
         }
-        console.log(item);
+
+        // Perform the AJAX request to update the item
         $.ajax({
-            url: "http://localhost:8080/posbackend/item",
-            type: "PUT",
-            contentType: "application/json",
-            data: JSON.stringify(item),
+            url: `http://localhost:8080/Pos/api/v1/items/${itemId}`, // Adjust URL if necessary
+            type: "PUT", // Use PUT for update
+            data: formData,
+            processData: false,
+            contentType: false,
             success: function (response) {
+                // Close the modal and refresh the UI
                 $("#itemEditModal").modal("hide");
-                loadItemTable();
-                loadItemsByCategory()
-                resetForm()
-                $("#successModal").modal("show");
+                loadItemTable(); // Reload the table to reflect updated data
+                loadItemsByCategory(); // Refresh items by category
+                resetForm(); // Clear the form fields
+                $("#successModal").modal("show"); // Show success modal
             },
             error: function (xhr, status, error) {
                 console.error("Failed to update item:", error);
                 alert("Failed to update item");
             }
         });
-
     });
+
+
+
+
+
 
 
     $("#okBtn").click(function (){
@@ -311,7 +366,7 @@ $(document).ready(function (){
 
     $("#confirmItemDelete").click(function (){
         $.ajax({
-            url: `http://localhost:8080/posbackend/item?id=${itemId}`,
+            url: `http://localhost:8080/Pos/api/v1/items/${itemId}`,
             type: 'DELETE',
             success: function (response) {
                 console.log("Customer deleted successfully");
@@ -403,7 +458,7 @@ $(document).ready(function (){
     // Function to display items based on category
     function loadItemsByCategory(category) {
         $.ajax({
-            url: 'http://localhost:8080/posbackend/item',
+            url: 'http://localhost:8080/Pos/api/v1/items',
             type: 'GET',
             dataType: 'json',
             success: function(items) {
@@ -479,7 +534,7 @@ $(document).ready(function (){
         }*/
         console.log(itemName)
         $.ajax({
-            url: `http://localhost:8080/posbackend/item?name=${itemName}`,
+            url: `http://localhost:8080/Pos/api/v1/item/${itemName}`,
             type: 'GET',
             success: function (response) {
                 if (response) {
@@ -510,12 +565,12 @@ $(document).ready(function (){
         filterItem.forEach(item=>{
             $("#itemName").val(item.name);
             $("#itemPrice").val(item.price);
-            $("#itemQuantity").val(item.quantity);
+            $("#itemQuantity").val(item.stockQuantity);
             $("#itemDescription").val(item.description);
             $("#itemCategory").empty();
 
             CategorySelect("itemCategory",item.category);
-            showImagePreview("assets/images/"+item.imgSrc);
+            showImagePreview(item.img);
         });
 
 
