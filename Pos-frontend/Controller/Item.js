@@ -1,10 +1,9 @@
-/*
 
 import {loadItemTable} from "./AddedItem.js"
 
 
 
-export function loadOrderTable(){
+/*export function loadOrderTable(){
     $("#orderTable").empty();
 
     var orders=[];
@@ -36,7 +35,7 @@ export function loadOrderTable(){
             console.error("Failed to retrieve orders:", error);
         }
     });
-}
+}*/
 
  $(document).ready(function (){
     $(document).on("click", ".item-button", function () {
@@ -49,7 +48,7 @@ export function loadOrderTable(){
         var item;
         var maxQuantity;
         $.ajax({
-            url: `http://localhost:8080/posbackend/item?name=${itemName}`,
+            url: `http://localhost:8080/Pos/api/v1/items/${itemName}`,
             type: 'GET',
             success: function (response) {
                 if (response) {
@@ -189,7 +188,7 @@ export function loadOrderTable(){
             //  total price
             totalPrice += itemSubtotal;
             $.ajax({
-                url: `http://localhost:8080/posbackend/item?name=${itemName}`,
+                url: `http://localhost:8080/POs/api/v1/items/${itemName}`,
                 type: 'GET',
                 success: function (response) {
                     console.log(response);
@@ -217,7 +216,7 @@ export function loadOrderTable(){
         });
 
         console.log("Total Price:", totalPrice);
-     /!*   console.log(proceedItems);*!/
+     /*   console.log(proceedItems);*/
         $("#payTotal").text(totalPrice);
         setTotalAmount(totalPrice);
         setCustomerId();
@@ -378,7 +377,7 @@ export function loadOrderTable(){
          customerIdSelect.appendChild(defaultOption);
           var customers=[];
          $.ajax({
-             url: `http://localhost:8080/posbackend/customer`,
+             url: `http://localhost:8080/Pos/api/v1/customers`,
              type: 'GET',
              success: function (response) {
                  if (response) {
@@ -415,7 +414,7 @@ export function loadOrderTable(){
          selectedCustomerId = this.value; // Get customer iD
 
         $.ajax({
-            url: `http://localhost:8080/posbackend/customer?id=${selectedCustomerId}`,
+            url: `http://localhost:8080/Pos/api/v1/customers/${selectedCustomerId}`,
             type: 'GET',
             success: function (response) {
                 if (response) {
@@ -470,4 +469,4 @@ export function loadOrderTable(){
 
 
 
- });*/
+ });
