@@ -307,10 +307,18 @@ $(document).ready(function (){
         // Create FormData to handle file upload (if you have an image input, else use base64)
         let formData = new FormData();
         formData.append("itemData", JSON.stringify(itemData));
+        var uploadedFile = $("#imageUploadModal")[0].files[0];
+        if (uploadedFile) {
+            // If a new image file has been uploaded, append it to the formData
+            formData.append("imageFile", uploadedFile);
+        } else if (selectedImage) {
+            // If no new file was uploaded, send the base64 string of the previously selected image
+            formData.append("imageFile",selectedImage); // Convert base64 to Blob and append
+        }
 
         // If you're handling base64 images, you can add it like this:
         if (selectedImage) {
-            formData.append("imageFile",selectedImage); // Convert base64 to Blob and append
+
         }
 
         // Perform the AJAX request to update the item
@@ -389,10 +397,10 @@ $(document).ready(function (){
 
   function  addItemCard(item){
       var imageUrl;
-      if (item.imgSrc===null){
+      if (item.img===null){
            imageUrl = "assets/images/no_image.png"
       }else {
-           imageUrl ="assets/images/"+item.imgSrc;
+          imageUrl = "data:image/png;base64," + item.img;
            console.log(imageUrl)
       }
       var name = item.name;
@@ -534,7 +542,7 @@ $(document).ready(function (){
         }*/
         console.log(itemName)
         $.ajax({
-            url: `http://localhost:8080/Pos/api/v1/item/${itemName}`,
+            url: `http://localhost:8080/Pos/api/v1/items/${itemName}`,
             type: 'GET',
             success: function (response) {
                 if (response) {
