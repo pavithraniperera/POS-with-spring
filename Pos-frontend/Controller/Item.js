@@ -3,39 +3,56 @@ import {loadItemTable} from "./AddedItem.js"
 
 
 
-/*export function loadOrderTable(){
+export function loadOrderTable(){
     $("#orderTable").empty();
 
     var orders=[];
     $.ajax({
-        url: 'http://localhost:8080/posbackend/order',
+        url: 'http://localhost:8080/Pos/api/v1/orders',
         type: 'GET',
         success: function(response) {
             $("#orderTable").empty();
             orders =response;
             console.log(response)
+            let customerName;
             orders.forEach((item) => {
-                var newRow = `
-                    <tr>
-                        <td class="id">${item.orderId}</td>
-                        <td class="custId">${item.customerId}</td>
-                        <td class="custName">${item.customerName}</td>
-                        <td class="total">${item.total}</td>
-                        <td class="date">${item.date}</td>
-                        <td>
-                            <button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button>
-                            <button class="btn btn-warning btn-sm"><i class="fa-solid fa-pen-to-square"></i></button>
-                        </td>
-                    </tr>
-                `;
-                $("#orderTable").append(newRow);
+
+                $.ajax({
+                    url: `http://localhost:8080/Pos/api/v1/customers/${item.customerId}`,
+                    type: 'GET',
+                    success: function (response) {
+                        if (response) {
+                            console.log(response.name)
+                            customerName = response.name;
+                                var newRow = `
+                                <tr>
+                                    <td class="id">${item.orderId}</td>
+                                    <td class="custId">${item.customerId}</td>
+                                    <td class="custName">${customerName}</td>
+                                    <td class="total">${item.total}</td>
+                                    <td class="date">${item.date}</td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button>
+                                        <button class="btn btn-warning btn-sm"><i class="fa-solid fa-pen-to-square"></i></button>
+                                    </td>
+                                </tr>
+                            `;
+                            $("#orderTable").append(newRow);
+
+                        }
+                    }
+
+                });
+
+
+
             });
         },
         error: function(xhr, status, error) {
             console.error("Failed to retrieve orders:", error);
         }
     });
-}*/
+}
 
  $(document).ready(function (){
     $(document).on("click", ".item-button", function () {
@@ -188,7 +205,7 @@ import {loadItemTable} from "./AddedItem.js"
             //  total price
             totalPrice += itemSubtotal;
             $.ajax({
-                url: `http://localhost:8080/POs/api/v1/items/${itemName}`,
+                url: `http://localhost:8080/Pos/api/v1/items/${itemName}`,
                 type: 'GET',
                 success: function (response) {
                     console.log(response);
@@ -200,7 +217,7 @@ import {loadItemTable} from "./AddedItem.js"
                         let itemObject = {
                             id:itemId,
                             name:itemName,
-                            quantity:itemQuantity,
+                            stockQuantity:itemQuantity,
 
                         }
                         console.log(itemId)
@@ -222,10 +239,16 @@ import {loadItemTable} from "./AddedItem.js"
         setCustomerId();
     });
 
+     function formatDate(date) {
+         var day = String(date.getDate()).padStart(2, '0');
+         var month = String(date.getMonth() + 1).padStart(2, '0'); // getMonth() returns 0-indexed month
+         var year = date.getFullYear();
 
+         return `${day}-${month}-${year}`;
+     }
 
      $("#pay").click(function () {
-         var date = getCurrentTime();
+         var date = formatDate(getCurrentTime());
 
          var customerId ;
          $("#customerId").change(function() {
@@ -240,10 +263,11 @@ import {loadItemTable} from "./AddedItem.js"
          // Send the order data to the backend via AJAX
 
          $.ajax({
-             url: 'http://localhost:8080/posbackend/orderHistory',
+             url: 'http://localhost:8080/Pos/api/v1/orders/lastOrderId',
              type: 'GET',
              success: function(response) {
-                 var lastOrderId = response.lastOrderId || null; // Handle null if no order exists
+                 var lastOrderId = response ; // Handle null if no order exists
+                 console.log(lastOrderId)
                  var orderId = generateNextOrderId(lastOrderId);
                  console.log("Generated Order ID:", orderId);
 
@@ -258,7 +282,7 @@ import {loadItemTable} from "./AddedItem.js"
 
                  // Send the order data to the backend via AJAX
                  $.ajax({
-                     url: 'http://localhost:8080/posbackend/order',
+                     url: 'http://localhost:8080/Pos/api/v1/orders',
                      type: 'POST',
                      contentType: 'application/json',
                      data: JSON.stringify(orderDto),
@@ -311,7 +335,7 @@ import {loadItemTable} from "./AddedItem.js"
         return new Date(); // Get current date as a string
     }
     var orderNumber=1;
-    function generateOrderId() {
+   /* function generateOrderId() {
         var nextOrderId;
         $.ajax({
             url: 'http://localhost:8080/posbackend/orderHistory',  // Update the URL as needed
@@ -332,7 +356,7 @@ import {loadItemTable} from "./AddedItem.js"
             }
         });
         return nextOrderId;
-    }
+    }*/
      function generateNextOrderId(lastOrderId) {
          if (!lastOrderId) {
              // Start from O001 if there are no orders in the database
