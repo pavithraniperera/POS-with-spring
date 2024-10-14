@@ -81,8 +81,23 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void delete(String id) {
+        Optional<OrderEntity> orderEntityOpt = orderDao.findById(id);
 
+        if (!orderEntityOpt.isPresent()) {
+            throw new OrderNotFoundException("Order with ID: " + id + " not found");
+        }
+
+        // Fetch all order items associated with this order
+        List<OrderItemEntity> orderItems = orderItemDao.findByOrderId(id);
+
+        // Delete all the associated order items
+        orderItemDao.deleteAll(orderItems);
+
+        //  delete the order itself
+        orderDao.deleteById(id);
     }
+
+
 
     @Override
     public List<OrderDto> getAll() {
