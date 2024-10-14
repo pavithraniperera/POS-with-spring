@@ -123,5 +123,21 @@ public class OrderServiceImpl implements OrderService {
         return orderDto;
     }
 
+    @Override
+    public List<OrderDto> getOrderByCustomer(String customerId) {
+
+        // Fetch the list of orders by customer ID
+        List<OrderEntity> orders = orderDao.findByCustomer(customerId);
+
+        if (orders.isEmpty()) {
+            // Optionally handle if no orders are found
+            throw new OrderNotFoundException("No orders found for customer with ID: " + customerId);
+        }
+
+
+        // Convert the OrderEntity to OrderDto using a mapping method
+        return mapping.asOrderDtoList(orders);
+    }
+
 
 }

@@ -65,6 +65,21 @@ public class OrderController {
         }
     }
 
+    @GetMapping("search/{customerId}")
+    public ResponseEntity<List<OrderDto>> getOrderByCustomer(@PathVariable("customerId") String customerId) {
+
+        try {
+            List<OrderDto> orderDtos = orderService.getOrderByCustomer(customerId);
+            return ResponseEntity.ok(orderDtos);
+        } catch (OrderNotFoundException e) {
+            logger.error("Order not found for ID: {}", customerId, e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);  // Return 404 Not Found
+        } catch (Exception e) {
+            logger.error("Error fetching order for ID: {}", customerId, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);  // Return 500 Internal Server Error
+        }
+    }
+
     @DeleteMapping("/{orderId}")
     public ResponseEntity<String> deleteOrder(@PathVariable("orderId") String orderId) {
         try {
