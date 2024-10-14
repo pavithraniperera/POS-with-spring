@@ -1,4 +1,3 @@
-/*
 
 import { loadOrderTable } from './Item.js'
 var recordIndex;
@@ -20,9 +19,9 @@ $("#orderTable").on("click","tr",function (){
     $("#orderDate").val(date);
     $("#orderTotal").text(total);
    // let proceedItemsArray = getProceedItemsArray(orderId);
-    /!*console.log(proceedItemsArray);*!/
+    /*console.log(proceedItemsArray);*/
     $.ajax({
-        url: `http://localhost:8080/posbackend/order?id=${orderId}`,
+        url: `http://localhost:8080/Pos/api/v1/orders/${orderId}`,
         type: 'GET',
         success: function (response) {
             // Assuming the response is an OrderDTO object containing order details and items array
@@ -51,11 +50,11 @@ $("#orderTable").on("click","tr",function (){
 function loadTable(itemsArray){
     $("#orderItemList").empty();
     itemsArray.map((item, index) => {
-        var total = item.quantity * item.price;
+        var total = item.stockQuantity * item.price;
         var newRow = `
             <tr>
                 <td class="id">${item.name}</td>
-                <td class="custId">${item.quantity}</td>
+                <td class="custId">${item.stockQuantity}</td>
                 <td class="castName">${item.price}</td>
                 <td class="total">${total}</td>
             </tr>
@@ -82,7 +81,7 @@ $("#deleteBtn").click(function (){
     let orderId =   $("#orderId").val();
     console.log(orderId)
     $.ajax({
-        url: `http://localhost:8080/posbackend/order?id=${orderId}`,
+        url: `http://localhost:8080/Pos/api/v1/orders/${orderId}`,
         type: 'DELETE',
         success: function (response) {
             console.log("order deleted successfully");
@@ -188,4 +187,3 @@ function performSearch() {
     searchOrders(customerId);
 }
 
-*/
