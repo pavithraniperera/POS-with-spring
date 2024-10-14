@@ -9,6 +9,7 @@ import lk.ijse.posbackend.Entity.ItemEntity;
 import lk.ijse.posbackend.Entity.OrderEntity;
 import lk.ijse.posbackend.Entity.OrderItemEntity;
 import lk.ijse.posbackend.Exceptions.ItemNotFoundException;
+import lk.ijse.posbackend.Exceptions.OrderNotFoundException;
 import lk.ijse.posbackend.Mapping.Mapping;
 import lk.ijse.posbackend.Service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -84,10 +86,26 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDto> getAll() {
-        return null;
+        return mapping.asOrderDtoList(orderDao.findAll());
     }
     public String getLastOrderId() {
         return orderDao.findLastOrderId();
+    }
+
+    @Override
+    public OrderDto getOrderById(String orderId) {
+        Optional<OrderEntity> orderEntityOpt = orderDao.findById(orderId);
+        if (orderEntityOpt.isEmpty()) {
+            throw new OrderNotFoundException("Order not found for ID: " + orderId);
+        }
+        OrderEntity orderEntity = orderEntityOpt.get();
+        List<OrderItemEntity> orderItems = orderItemDao.findByOrderId(orderId);
+        OrderDto orderDto = mapping.toOrderDto(orderEntity);
+        orderDto.setItemDtoList(orderItems.stream()
+                .map((OrderItemEntity item) -> mapping.toItemDto(item.getItem()))
+                .collect(Collectors.toList()));
+        System.out.println(orderDto);
+        return orderDto;
     }
 
 
