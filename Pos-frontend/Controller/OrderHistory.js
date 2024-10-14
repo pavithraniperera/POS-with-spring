@@ -142,7 +142,7 @@ $("#filteredOrdersTable").on("click","tr",function (){
 function searchOrders(customerId) {
     let filteredOrders = [];
     $.ajax({
-        url: `http://localhost:8080/posbackend/orderHistory?id=${customerId}`,
+        url: `http://localhost:8080/Pos/api/v1/orders/search/${customerId}`,
         type: 'GET',
         success: function (response) {
            filteredOrders = response;
