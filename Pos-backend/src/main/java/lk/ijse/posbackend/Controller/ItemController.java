@@ -9,6 +9,8 @@ import lk.ijse.posbackend.Exceptions.CustomerNotFoundException;
 import lk.ijse.posbackend.Service.ItemService;
 import lk.ijse.posbackend.util.AppUtil;
 import lk.ijse.posbackend.util.RegexUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,7 +25,7 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("api/v1/items")
 public class ItemController {
-
+    private static final Logger logger = LoggerFactory.getLogger(ItemController.class);
     private final ItemService itemService;
 
     @Autowired
@@ -34,6 +36,7 @@ public class ItemController {
     @PostMapping
     public ResponseEntity<String> saveItem(@RequestParam("itemData") String itemData,
                                            @RequestParam("imageFile") MultipartFile imageFile) {
+        logger.info("Received request to save item with data: {}", itemData);
         try {
             // Convert itemData JSON string to ItemDto object
             ObjectMapper objectMapper = new ObjectMapper();
@@ -49,10 +52,12 @@ public class ItemController {
 
 
             itemService.save(itemDto);
-
+            logger.info("Item {} saved successfully", itemDto.getId());
             return new ResponseEntity<>("Item saved successfully", HttpStatus.CREATED);
+
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error("Error saving item", e);
             return new ResponseEntity<>("Failed to save item", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -67,8 +72,10 @@ public class ItemController {
         ItemDto itemDto = itemService.getItemByName(itemName);
 
         if (!RegexUtil.isValidItemId(itemDto.getId())) {
+            logger.warn("Invalid item ID: {}", itemDto.getId());
             return new ErrorStatus(1, "Item id not matched");
         }
+        logger.info("Item {} retrieved successfully", itemDto.getId());
        return itemDto;
 
 
@@ -77,6 +84,7 @@ public class ItemController {
     @PutMapping(value = "/{itemId}")
     public ResponseEntity<String> updateItem(@PathVariable("itemId") String itemId,@RequestParam("itemData") String itemData,
                                              @RequestParam("imageFile") MultipartFile imageFile){
+        logger.info("Received request to update item with ID: {}", itemId);
         try {
             // Convert itemData JSON string to ItemDto object
             ObjectMapper objectMapper = new ObjectMapper();
@@ -92,10 +100,12 @@ public class ItemController {
 
 
             itemService.update(itemId,itemDto);
+            logger.info("Item {} updated successfully", itemId);
 
             return new ResponseEntity<>("Item Updated successfully", HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error("Error updating item with ID: {}", itemId, e);
             return new ResponseEntity<>("Failed to Update item", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -103,16 +113,19 @@ public class ItemController {
     }
     @DeleteMapping(value = "/{itemId}")
     public ResponseEntity<Void> deleteCustomer(@PathVariable("itemId") String itemId){
+        logger.info("Received request to delete item with ID: {}", itemId);
 
         try {
             if (!RegexUtil.isValidItemId(itemId)){
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             itemService.delete(itemId);
+            logger.info("Item {} deleted successfully", itemId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
         }catch (CustomerNotFoundException e){
             e.printStackTrace();
+            logger.error("Item not found with ID: {}", itemId, e);
             return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         }catch (Exception e){
