@@ -4,6 +4,7 @@ import lk.ijse.posbackend.Dto.impl.OrderDto;
 import lk.ijse.posbackend.Service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,8 +15,9 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> saveOrder(@RequestBody OrderDto orderDto) {
+        System.out.println("save order");
         try {
             System.out.print(orderDto);
             orderService.save(orderDto);
@@ -25,4 +27,16 @@ public class OrderController {
             return new ResponseEntity<>("Failed to save order", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/lastOrderId")
+    public ResponseEntity<String> getLastOrderId() {
+        String lastOrderId = orderService.getLastOrderId();
+        if (lastOrderId != null) {
+            return ResponseEntity.ok(lastOrderId);
+        } else {
+            return ResponseEntity.ok(null);  // If no orders, return null
+        }
+    }
+
+
 }

@@ -8,6 +8,7 @@ import lk.ijse.posbackend.Dto.impl.OrderDto;
 import lk.ijse.posbackend.Entity.ItemEntity;
 import lk.ijse.posbackend.Entity.OrderEntity;
 import lk.ijse.posbackend.Entity.OrderItemEntity;
+import lk.ijse.posbackend.Exceptions.ItemNotFoundException;
 import lk.ijse.posbackend.Mapping.Mapping;
 import lk.ijse.posbackend.Service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +44,8 @@ public class OrderServiceImpl implements OrderService {
             if (itemOpt.isPresent()) {
                 ItemEntity item = itemOpt.get();
 
-                // Ensure we are using correct naming: buying quantity vs stock quantity
-                int buyingQuantity = itemDto.getStockQuantity(); // renamed from getStockQuantity() to avoid confusion
 
+                int buyingQuantity = itemDto.getStockQuantity();
                 // Check stock availability
                 if (item.getStockQuantity() >= buyingQuantity) {
                     // Update stock quantity
@@ -67,7 +67,7 @@ public class OrderServiceImpl implements OrderService {
                     throw new RuntimeException("Insufficient stock for item: " + item.getName());
                 }
             } else {
-                throw new RuntimeException("Item not found: " + itemDto.getName());
+                throw new ItemNotFoundException("Item not found: " + itemDto.getName());
             }
         }
     }
@@ -85,6 +85,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderDto> getAll() {
         return null;
+    }
+    public String getLastOrderId() {
+        return orderDao.findLastOrderId();
     }
 
 
