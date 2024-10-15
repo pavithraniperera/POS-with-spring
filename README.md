@@ -1,5 +1,5 @@
 
-# POS Backend API
+# POS  API(Spring version)
 
 This project is a backend API for a Point of Sale (POS) system. It allows you to manage items, customers, orders, and users. The API is built using Java EE with a MySQL database for data persistence.
 
@@ -24,7 +24,7 @@ This project is a backend API for a Point of Sale (POS) system. It allows you to
 ## Technologies
 
 - **Java EE**
-- **Spring Boot**
+- **Spring**
 - **MySQL**
 - **Hibernate**
 - **Spring Data JPA**
